@@ -7,11 +7,11 @@ const { getToken } = require('../lib/db');
  * Middleware — resolve access_token from seller_id header
  * Frontend must send X-Seller-ID on every request
  */
-function requireToken(req, res, next) {
+async function requireToken(req, res, next) {
   const sellerId = req.headers['x-seller-id'];
   if (!sellerId) return res.status(401).json({ error: 'Missing X-Seller-ID header' });
 
-  const stored = getToken(sellerId);
+  const stored = await getToken(sellerId);
   if (!stored) return res.status(401).json({ error: 'Not authenticated' });
 
   const nowSec = Math.floor(Date.now() / 1000);

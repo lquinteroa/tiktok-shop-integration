@@ -5,9 +5,6 @@ const { initDb } = require('./lib/db');
 const { router: authRouter } = require('./routes/auth');
 const shopRouter = require('./routes/shop');
 
-// ─── Init DB ──────────────────────────────────────────────────────────────────
-initDb();
-
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -28,6 +25,14 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
-  console.log(`TikTok Shop server running on http://localhost:${PORT}`);
-});
+// ─── Init DB then start server ────────────────────────────────────────────────
+initDb()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`TikTok Shop server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Failed to initialise DB:', err.message);
+    process.exit(1);
+  });

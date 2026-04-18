@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: tiktok-shop-server
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_KEY
+        sync: false
+      - key: APP_SECRET
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIRECT_URI
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
