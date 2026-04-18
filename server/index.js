@@ -3,7 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const { initDb } = require('./lib/db');
 const { router: authRouter } = require('./routes/auth');
+const authLocalRouter = require('./routes/authLocal');
 const shopRouter = require('./routes/shop');
+const requireAuth = require('./middleware/requireAuth');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -14,7 +16,8 @@ app.use(express.json());
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use('/auth', authRouter);
-app.use('/shop', shopRouter);
+app.use('/auth/local', authLocalRouter);
+app.use('/shop', requireAuth, shopRouter);
 
 // ─── Health check ─────────────────────────────────────────────────────────────
 app.get('/health', (_, res) => res.json({ status: 'ok', ts: Date.now() }));
