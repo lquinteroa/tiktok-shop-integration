@@ -36,6 +36,7 @@ initDb()
     });
   })
   .catch((err) => {
-    console.error('Failed to initialise DB:', err.message);
+    console.error('Failed to initialise DB:', err);
+    console.error('DATABASE_URL set:', !!process.env.DATABASE_URL);
     process.exit(1);
   });
